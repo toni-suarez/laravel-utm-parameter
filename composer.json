@@ -1,0 +1,52 @@
+{
+    "name": "suarez/laravel-utm-parameter",
+    "description": "A little helper to store and handle utm-parameter",
+    "homepage": "https://github.com/toni-suarez/laravel-utm-parameter",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Toni Suarez",
+            "email": "hallo@tonisuarez.de",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^8.0",
+        "illuminate/contracts": "^8.0"
+    },
+    "require-dev": {
+        "nunomaduro/collision": "^5.10",
+        "orchestra/testbench": "^6.22",
+        "phpunit/phpunit": "^9.5",
+        "friendsofphp/php-cs-fixer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Suarez\\UtmParameter\\": "src"
+        },
+        "files": [
+            "src/helper.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Suarez\\UtmParameter\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Suarez\\UtmParameter\\Providers\\UtmParameterServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
