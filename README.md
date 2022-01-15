@@ -1,27 +1,41 @@
 # Laravel UTM-Parameters
 
-- [Introduction](#introduction)
-- [Installation](#installation)
-  - [Middleware](#middleware)
-- [Usage](#usage)
-  - [get_all_utm](#all-utm-parameters)
-  - [get_utm](#Certain-utm-parameter)
-  - [has_utm|has_not_utm](#determine-utm-parameter)
-- [License](#license)
+[![Test PHP 8.x](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml/badge.svg?branch=main)](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml)
+![Packagist Downloads](https://img.shields.io/packagist/dt/suarez/laravel-utm-parameter)
+![GitHub](https://img.shields.io/github/license/toni-suarez/laravel-utm-parameter)
 
----
 
-## Introduction
-
-A lightweight way to handle UTM-Parameters session-based in your Laravel Application.
-
-*Example*
+A lightweight way to handle UTM parameters session-based in your Laravel Application.
 
 ```blade
 @if(has_utm('source', 'newsletter'))
   <p>Special Content for Newsletter-Subscriber.</p>
 @endif
 ```
+
+---
+
+## Table of Content
+
+- [Introduction](#introduction)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
+## Introduction
+
+What are these UTM parameters? UTM is an acronym standing for "Urchin Tracking Module" and where initially introduced in Google Analytics. It's a way, mostly marketers track effectiveness of online marketing compaings.
+
+There are five different UTM parameters:
+- utm_source
+- utm_medium
+- utm_campaign
+- utm_content
+- utm_term
+
+Not all parameters are used everytime. 
+Here would be a common example: www.example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=holiday-sale
+
 
 ## Installation
 
@@ -61,25 +75,42 @@ Route::middleware('utm-parameters')->get('langing-page/{slug}', 'LandingPageCont
 
 ## Usage
 
-### All UTM-Parameters
+### All UTM parameters
 
-To get all UTM-Parameters as an array, you can use `get_all_utm()`.
+To retrieve all UTM parameters as an array, you could use the helper `get_all_utm()`.
 
-###  Certain UTM-Parameter
+```php
+$parameter = get_all_utm();
+```
 
-If you wish to retrieve certain UTM-Parameter, you can use ``get_utm('source|medium|campaign|term|content')`.
+###  Get UTM parameter
 
-**For example:**
+If you need to retrieve certain UTM parameter, you can use `get_utm('source|medium|campaign|term|content')`.
 
 ```blade
  <p>You came from {{ get_utm('source') }}</p>
 ```
 
-### Determine UTM-Parameter
+```php
+public function someTask()
+{
+  return match(get_utm('source')) {
+    'bing' => Bing::class,
+    'google' => Google::class,
+    'duckduckgo' => DuckDuckGo::class,
+    'newsletter' => Newsletter::class
+    default => Default::class
+  };
+}
+```
 
-Sometimes you want to show or do something, if user might have some or specific utm-parameters. Simply use `has_utm('source|medium|campaign|term|content', 'optional-value')` or `has_not_utm('source|medium|campaign|term|content', 'optional-value')`
+### Has UTM parameter
 
-**For example:**
+Sometimes you want to show or do something, if user might have some or specific utm-parameters. 
+
+Simply use:
+- `has_utm('source|medium|campaign|term|content', 'optional-value')`
+- `has_not_utm('source|medium|campaign|term|content', 'optional-value')`
 
 ```blade
  @if(has_utm('term'))
@@ -87,11 +118,13 @@ Sometimes you want to show or do something, if user might have some or specific 
  @end
 ```
 
-or
-
 ```php
  if (has_utm('campaign', 'special-sale')) {
    redirect('to/special-sale/page');
+ }
+ 
+ if (has_not_utm('campaign', 'newsletter')) {
+   session()->flash('Did you know, we have a newsletter?');
  }
 ```
 
