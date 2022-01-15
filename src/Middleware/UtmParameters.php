@@ -18,13 +18,11 @@ class UtmParameters
      */
     public function handle(Request $request, Closure $next)
     {
-        $response = $next($request);
-
-        if ($this->shouldAcceptUtmParameter($request, $response)) {
+        if ($this->shouldAcceptUtmParameter($request)) {
             app(UtmParameter::class)->boot(session('utm'));
         }
 
-        return $response;
+        return $next($request);
     }
 
     /**
@@ -34,8 +32,8 @@ class UtmParameters
      * @param  \Illuminate\Http\Response $response
      * @return bool
      */
-    protected function shouldAcceptUtmParameter(Request $request, Response $response)
+    protected function shouldAcceptUtmParameter(Request $request)
     {
-        return $request->isMethod('GET') && $response->getStatusCode() == 200;
+        return $request->isMethod('GET');
     }
 }
