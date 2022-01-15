@@ -3,10 +3,12 @@ name: Test PHP 8.x
 on:
   push:
     paths-ignore:
-      - 'readme.md'
+      - 'README.md'
+      - 'CHANGELOG.md'
   pull_request:
     paths-ignore:
-      - 'readme.md'
+      - 'README.md'
+      - 'CHANGELOG.md'
   release:
 
 jobs:

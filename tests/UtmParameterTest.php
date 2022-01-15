@@ -1,6 +1,6 @@
 <?php
 
-namespace Suarez\UtmParameter;
+namespace Suarez\UtmParameter\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Suarez\UtmParameter\UtmParameter;
