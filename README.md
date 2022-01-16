@@ -93,16 +93,26 @@ If you need to retrieve certain UTM parameter, you can use `get_utm('source|medi
 ```
 
 ```php
+
+// Some Task in your Class
 public function someTask()
 {
   return match(get_utm('source')) {
     'bing' => Bing::class,
     'google' => Google::class,
     'duckduckgo' => DuckDuckGo::class,
-    'newsletter' => Newsletter::class
+    'newsletter' => Newsletter::class,
     default => Default::class
   };
 }
+
+// Render a view based on an utm_source
+Route::get('/', function () {
+  return match(get_utm('source')) {
+        'newsletter' => view('newsletter'),
+        default => view('welcome')
+    };
+});
 ```
 
 ### Has UTM parameter
