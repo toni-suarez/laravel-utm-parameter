@@ -21,13 +21,12 @@ class UtmParameter
     /**
      * Bootstrap UtmParameter.
      *
-     * @param array|null $parameters
-     *
+     * @param  array|null  $parameters
      * @return UtmParameter
      */
     public function boot($parameters = null)
     {
-        if (!$parameters) {
+        if (! $parameters) {
             $parameters = self::getParameter();
             session(['utm' => $parameters]);
         }
@@ -52,8 +51,7 @@ class UtmParameter
     /**
      * Retrieve a UTM-Parameter by key.
      *
-     * @param string $key
-     *
+     * @param  string  $key
      * @return string|null
      */
     public static function get($key)
@@ -64,7 +62,7 @@ class UtmParameter
             $key = 'utm_'.$key;
         }
 
-        if (!array_key_exists($key, $parameters)) {
+        if (! array_key_exists($key, $parameters)) {
             return null;
         }
 
@@ -74,9 +72,8 @@ class UtmParameter
     /**
      * Determine if a UTM-Parameter exists.
      *
-     * @param string $key
-     * @param string $value
-     *
+     * @param  string  $key
+     * @param  string  $value
      * @return bool
      */
     public static function has($key, $value = null)
@@ -87,7 +84,7 @@ class UtmParameter
             $key = 'utm_'.$key;
         }
 
-        if (!array_key_exists($key, $parameters)) {
+        if (! array_key_exists($key, $parameters)) {
             return false;
         }
 
