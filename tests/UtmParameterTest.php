@@ -12,11 +12,11 @@ class UtmParameterTest extends TestCase
         parent::setUp();
 
         $parameters = [
-            "utm_source" => "google",
-            "utm_medium" => "cpc",
-            "utm_campaign" => "{campaignid}",
-            "utm_content" => "{adgroupid}",
-            "utm_term" => "{targetid}"
+            'utm_source'   => 'google',
+            'utm_medium'   => 'cpc',
+            'utm_campaign' => '{campaignid}',
+            'utm_content'  => '{adgroupid}',
+            'utm_term'     => '{targetid}',
         ];
 
         app()->bind(UtmParameter::class, function () use ($parameters) {
