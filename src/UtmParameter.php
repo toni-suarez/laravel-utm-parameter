@@ -22,6 +22,7 @@ class UtmParameter
      * Bootstrap UtmParameter.
      *
      * @param array|null $parameters
+     *
      * @return UtmParameter
      */
     public function boot($parameters = null)
@@ -52,6 +53,7 @@ class UtmParameter
      * Retrieve a UTM-Parameter by key.
      *
      * @param string $key
+     *
      * @return string|null
      */
     public static function get($key)
@@ -59,7 +61,7 @@ class UtmParameter
         $parameters = self::all();
 
         if (strpos($key, 'utm_') === false) {
-            $key = 'utm_' . $key;
+            $key = 'utm_'.$key;
         }
 
         if (!array_key_exists($key, $parameters)) {
@@ -69,12 +71,12 @@ class UtmParameter
         return $parameters[$key];
     }
 
-
     /**
      * Determine if a UTM-Parameter exists.
      *
      * @param string $key
      * @param string $value
+     *
      * @return bool
      */
     public static function has($key, $value = null)
@@ -82,7 +84,7 @@ class UtmParameter
         $parameters = self::all();
 
         if (strpos($key, 'utm_') === false) {
-            $key = 'utm_' . $key;
+            $key = 'utm_'.$key;
         }
 
         if (!array_key_exists($key, $parameters)) {
@@ -104,7 +106,7 @@ class UtmParameter
     protected static function getParameter()
     {
         return collect(request()->all())
-            ->filter(fn ($value, $key) => substr($key, 0, 4) === "utm_")
+            ->filter(fn ($value, $key) => substr($key, 0, 4) === 'utm_')
             ->map(fn ($value) => htmlspecialchars($value, ENT_QUOTES, 'UTF-8'))
             ->toArray();
     }

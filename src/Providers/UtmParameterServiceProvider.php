@@ -2,8 +2,8 @@
 
 namespace Suarez\UtmParameter\Providers;
 
-use Suarez\UtmParameter\UtmParameter;
 use Illuminate\Support\ServiceProvider;
+use Suarez\UtmParameter\UtmParameter;
 
 class UtmParameterServiceProvider extends ServiceProvider
 {

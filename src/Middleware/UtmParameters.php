@@ -12,8 +12,9 @@ class UtmParameters
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     *
      * @return mixed
      */
     public function handle(Request $request, Closure $next)
@@ -28,8 +29,9 @@ class UtmParameters
     /**
      * Determines whether the given request/response pair should accept UTM-Parameters.
      *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Illuminate\Http\Response $response
+     * @param \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Response $response
+     *
      * @return bool
      */
     protected function shouldAcceptUtmParameter(Request $request)
