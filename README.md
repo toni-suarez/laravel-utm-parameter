@@ -34,7 +34,7 @@ There are five different UTM parameters:
 - utm_content
 - utm_term
 
-Not all parameters are used everytime. 
+Not all parameters are used everytime.
 Here would be a common example: www.example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=holiday-sale
 
 
@@ -117,7 +117,7 @@ Route::get('/', function () {
 
 ### Has UTM parameter
 
-Sometimes you want to show or do something, if user might have some or specific utm-parameters. 
+Sometimes you want to show or do something, if user might have some or specific utm-parameters.
 
 Simply use:
 - `has_utm('source|medium|campaign|term|content', 'optional-value')`
@@ -133,7 +133,7 @@ Simply use:
  if (has_utm('campaign', 'special-sale')) {
    redirect('to/special-sale/page');
  }
- 
+
  if (has_not_utm('campaign', 'newsletter')) {
    session()->flash('Did you know, we have a newsletter?');
  }
