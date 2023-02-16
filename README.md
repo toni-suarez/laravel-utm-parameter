@@ -25,7 +25,7 @@ A lightweight way to handle UTM parameters session-based in your Laravel Applica
 
 ## Introduction
 
-What are these UTM parameters? UTM is an acronym standing for "Urchin Tracking Module" and where initially introduced in Google Analytics. It's a way, mostly marketers track effectiveness of online marketing compaings.
+What are these UTM parameters? UTM is an acronym standing for "Urchin Tracking Module" and where initially introduced in Google Analytics. It's a way, mostly marketers track effectiveness of online marketing campaigns.
 
 There are five different UTM parameters:
 - utm_source
@@ -34,8 +34,8 @@ There are five different UTM parameters:
 - utm_content
 - utm_term
 
-Not all parameters are used everytime. 
-Here would be a common example: www.example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=holiday-sale
+Not all parameters are used everytime.
+Here would be a common example: https://www.example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=holiday-sale
 
 
 ## Installation
@@ -48,7 +48,7 @@ $ composer require suarez/laravel-utm-parameter
 
 ### Middleware
 
-Open `app/Http/Kernel.php` and add a new item to the `web` middleware group:
+Open the `app/Http/Kernel.php` file and add a new item to the `web` middleware group:
 
 ```php
 protected $middlewareGroups = [
@@ -59,26 +59,34 @@ protected $middlewareGroups = [
 ];
 ```
 
-If you want to selectively make UTM-Parameters available on specific requests to your site, you should instead add a new mapping to the `routeMiddleware` array:
+To enable UTM-Parameters only for certain requests to your site, add a new mapping to either the `routeMiddleware` (Laravel 9) or the `middlewareAliases` (Laravel 10) Array.
 
 ```php
+# Laravel 9 and below
 protected $routeMiddleware = [
+    /* ... keep the existing mappings here */
+    'utm-parameters' => \Suarez\UtmParameter\Middleware\UtmParameters::class,
+];
+
+# Laravel 10
+protected $middlewareAliases = [
     /* ... keep the existing mappings here */
     'utm-parameters' => \Suarez\UtmParameter\Middleware\UtmParameters::class,
 ];
 ```
 
-To make UTM-Parameters available for certain given requests, use the `utm-parameters` middleware:
+To apply UTM-Parameters to specific routes, use the following middleware: `utm-parameters`
 
 ```php
-Route::middleware('utm-parameters')->get('langing-page/{slug}', 'LandingPageController@show');
+Route::middleware('utm-parameters')
+  ->get('langing-page/{slug}', 'LandingPageController@show');
 ```
 
 ## Usage
 
 ### All UTM parameters
 
-To retrieve all UTM parameters as an array, you could use the helper `get_all_utm()`.
+To get an array of all UTM parameters, use this helper:  `get_all_utm()`.
 
 ```php
 $parameter = get_all_utm();
@@ -86,7 +94,7 @@ $parameter = get_all_utm();
 
 ###  Get UTM parameter
 
-If you need to retrieve certain UTM parameter, you can use `get_utm('source|medium|campaign|term|content')`.
+If you need to retrieve certain UTM parameters, use `get_utm('source|medium|campaign|term|content')`.
 
 ```blade
  <p>You came from {{ get_utm('source') }}</p>
@@ -117,7 +125,7 @@ Route::get('/', function () {
 
 ### Has UTM parameter
 
-Sometimes you want to show or do something, if user might have some or specific utm-parameters. 
+Sometimes you want to show or do something, if user might have some or specific utm-parameters.
 
 Simply use:
 - `has_utm('source|medium|campaign|term|content', 'optional-value')`
@@ -133,7 +141,7 @@ Simply use:
  if (has_utm('campaign', 'special-sale')) {
    redirect('to/special-sale/page');
  }
- 
+
  if (has_not_utm('campaign', 'newsletter')) {
    session()->flash('Did you know, we have a newsletter?');
  }
