@@ -132,9 +132,13 @@ Simply use:
 - `has_not_utm('source|medium|campaign|term|content', 'optional-value')`
 
 ```blade
- @if(has_utm('term'))
+ @hasUtm('term')
   <p>You have any term.</p>
- @end
+ @endhasUtm
+
+ @hasUtm('source', 'corporate-partner')
+  <div>Some corporate partner related stuff</div>
+ @endhasUtm
 ```
 
 ```php
