@@ -36,4 +36,3 @@ class UtmParameterServiceProvider extends ServiceProvider
         });
     }
 }
-
