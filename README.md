@@ -9,9 +9,9 @@
 A lightweight way to handle UTM parameters session-based in your Laravel Application.
 
 ```blade
-@if(has_utm('source', 'newsletter'))
+@hasUtm('source', 'newsletter')
   <p>Special Content for Newsletter-Subscriber.</p>
-@endif
+@endhasUtm
 ```
 
 ---
@@ -132,13 +132,13 @@ Simply use:
 - `has_not_utm('source|medium|campaign|term|content', 'optional-value')`
 
 ```blade
- @hasUtm('term')
-  <p>You have any term.</p>
- @endhasUtm
-
- @hasUtm('source', 'corporate-partner')
+@hasUtm('source', 'corporate-partner')
   <div>Some corporate partner related stuff</div>
- @endhasUtm
+@endhasUtm
+
+@hasNotUtm('term')
+  <p>You have any term.</p>
+@endhasNotUtm
 ```
 
 ```php
