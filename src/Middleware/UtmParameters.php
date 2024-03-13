@@ -4,7 +4,6 @@ namespace Suarez\UtmParameter\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Suarez\UtmParameter\UtmParameter;
 
 class UtmParameters
@@ -32,7 +31,7 @@ class UtmParameters
      * @param \Illuminate\Http\Request  $request
      * @param \Illuminate\Http\Response $response
      *
-     * @return bool
+     * @return \Illuminate\Http\Request
      */
     protected function shouldAcceptUtmParameter(Request $request)
     {
