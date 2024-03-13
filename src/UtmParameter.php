@@ -21,7 +21,7 @@ class UtmParameter
     /**
      * Bootstrap UtmParameter.
      *
-     * @param array|null $parameters
+     * @param array|string|null $parameters
      *
      * @return UtmParameter
      */
