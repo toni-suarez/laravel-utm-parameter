@@ -48,26 +48,38 @@ $ composer require suarez/laravel-utm-parameter
 
 ### Middleware
 
-Open the `app/Http/Kernel.php` file and add a new item to the `web` middleware group:
+Open the `bootstrap/app.php` file and append the `UtmParameters::class` inside the web-group
 
 ```php
-# Laravel 10
-protected $middlewareGroups = [
-    'web' => [
-        /* ... keep the existing middleware here */
-        \Suarez\UtmParameter\Middleware\UtmParameters::class,
-    ],
-];
+# Laravel 11
+return Application::configure(basePath: dirname(__DIR__))
+  ...
+  ->withMiddleware(function (Middleware $middleware) {
+    $middleware->web(append: [
+      Suarez\UtmParameter\Middleware\UtmParameters::class,
+      /* ... keep the existing middleware here */
+    ]);
+  })
+  ...
 ```
 
-To enable UTM-Parameters only for certain requests to your site, add a new mapping to the `routeMiddleware` Array.
+To enable UTM-Parameters only for certain requests to your site, add a new alias.
 
 ```php
-# Laravel 10
-protected $middlewareAliases = [
-    /* ... keep the existing mappings here */
-    'utm-parameters' => \Suarez\UtmParameter\Middleware\UtmParameters::class,
-];
+# Laravel 11
+use Suarez\UtmParameter\Middleware\UtmParameters;
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware
+        ->alias([
+          /* ... keep the existing mappings here */
+          'utm-parameters' => UtmParameters::class,
+          ])
+        ->web(append: [
+          /* ... keep the existing mappings here */
+          UtmParameters::class
+        ]);
+})
 ```
 
 To apply UTM-Parameters to specific routes, use the following middleware: `utm-parameters`
