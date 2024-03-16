@@ -48,8 +48,6 @@ $ composer require suarez/laravel-utm-parameter
 
 ### Middleware
 
-#### Laravel 11
-
 Open the `bootstrap/app.php` file and append the `UtmParameters::class` inside the web-group
 
 ```php
@@ -82,37 +80,6 @@ use Suarez\UtmParameter\Middleware\UtmParameters;
           UtmParameters::class
         ]);
 })
-```
-
-To apply UTM-Parameters to specific routes, use the following middleware: `utm-parameters`
-
-```php
-Route::middleware('utm-parameters')
-  ->get('langing-page/{slug}', 'LandingPageController@show');
-```
-
-#### Laravel 10
-
-Open the `app/Http/Kernel.php` file and add a new item to the `web` middleware group:
-
-```php
-# Laravel 10 and below
-protected $middlewareGroups = [
-    'web' => [
-        /* ... keep the existing middleware here */
-        \Suarez\UtmParameter\Middleware\UtmParameters::class,
-    ],
-];
-```
-
-To enable UTM-Parameters only for certain requests to your site, add a new mapping to the `middlewareAliases` Array.
-
-```php
-# Laravel 10 and below
-protected $middlewareAliases = [
-    /* ... keep the existing mappings here */
-    'utm-parameters' => \Suarez\UtmParameter\Middleware\UtmParameters::class,
-];
 ```
 
 To apply UTM-Parameters to specific routes, use the following middleware: `utm-parameters`
