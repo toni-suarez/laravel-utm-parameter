@@ -48,12 +48,10 @@ $ composer require suarez/laravel-utm-parameter
 
 ### Middleware
 
-#### Laravel 8
-
 Open the `app/Http/Kernel.php` file and add a new item to the `web` middleware group:
 
 ```php
-# Laravel 9
+# Laravel 10
 protected $middlewareGroups = [
     'web' => [
         /* ... keep the existing middleware here */
@@ -65,8 +63,8 @@ protected $middlewareGroups = [
 To enable UTM-Parameters only for certain requests to your site, add a new mapping to the `routeMiddleware` Array.
 
 ```php
-# Laravel 9
-protected $routeMiddleware = [
+# Laravel 10
+protected $middlewareAliases = [
     /* ... keep the existing mappings here */
     'utm-parameters' => \Suarez\UtmParameter\Middleware\UtmParameters::class,
 ];
