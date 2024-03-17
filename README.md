@@ -4,7 +4,7 @@
 [![StyleCI](https://github.styleci.io/repos/448347178/shield?branch=main)](https://github.styleci.io/repos/448347178?branch=main)
 [![Test PHP 8.x](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml/badge.svg?branch=main)](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/suarez/laravel-utm-parameter?style=flat-square)](https://packagist.org/packages/suarez/laravel-utm-parameter)
-![Static Badge](https://img.shields.io/badge/Github-Wiki-blue?style=flat-square&logo=github&logoColor=white)
+[![Static Badge](https://img.shields.io/badge/Github-Wiki-blue?style=flat-square&logo=github&logoColor=white)](https://github.com/toni-suarez/laravel-utm-parameter/wiki)
 
 
 A lightweight way to handle UTM parameters session-based in your Laravel Application.
