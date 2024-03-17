@@ -44,7 +44,7 @@ return Application::configure(basePath: dirname(__DIR__))
   ...
 ```
 
-#### Alias Configuration (Optional)
+### Middleware Alias (Optional)
 
 To enable UTM-Parameters only for certain requests or routes in your application, you can add an alias for the UtmParameters middleware. Open the bootstrap/app.php file and append the `UtmParameters::class` inside the web-group.
 
