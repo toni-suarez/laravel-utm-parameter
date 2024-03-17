@@ -143,16 +143,18 @@ Simply use:
 
 
 ## Resources
-Explore additional use cases and resources on our wiki pages: https://github.com/toni-suarez/laravel-utm-parameter/wiki
+Explore additional use cases and resources on the [wiki pages](https://github.com/toni-suarez/laravel-utm-parameter/wiki)
 
-- [Advanced Usage](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Advanced-Usage)
-- [Blade Usage](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Blade-Usage)
-- [How it works](https://github.com/toni-suarez/laravel-utm-parameter/wiki/How-it-works)
 - [Installation Guide](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide)
 - [Installation Guide (Laravel 8.x to 10.x)](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide-(Laravel-8.x-to-10.x)))
+- [How it works](https://github.com/toni-suarez/laravel-utm-parameter/wiki/How-it-works)
 - [Limitations](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Limitations)
+- [Advanced Usage](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Advanced-Usage)
+- [Blade Usage](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Blade-Usage)
 - [Usage via Facade or Helper Class](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Usage-via-Facade-or-Helper-Class)
-- [Use Case: A B Testing](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Use-Case:-A-B-Testing)
+
+### Inspirations
+- [Use Case: A/B Testing](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Use-Case:-A-B-Testing)
 - [Use Case: Different Styles for Social Media](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Use-Case:-Different-Styles-for-Social-Media)
 - [Use Case: Lead Attribution](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Use-Case:-Lead-Attribution)
 - [Use Case: Social Media Tracking](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Use-Case:-Social-Media-Tracking)
