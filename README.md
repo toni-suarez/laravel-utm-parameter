@@ -146,7 +146,7 @@ Simply use:
 Explore additional use cases and resources on the [wiki pages](https://github.com/toni-suarez/laravel-utm-parameter/wiki)
 
 - [Installation Guide](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide)
-- [Installation Guide (Laravel 8.x to 10.x)](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide-(Laravel-8.x-to-10.x)))
+- [Installation Guide (Laravel 8.x to 10.x)](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide-(Laravel-8.x-to-10.x))
 - [How it works](https://github.com/toni-suarez/laravel-utm-parameter/wiki/How-it-works)
 - [Limitations](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Limitations)
 - [Advanced Usage](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Advanced-Usage)
