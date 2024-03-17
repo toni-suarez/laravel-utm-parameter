@@ -17,39 +17,19 @@ A lightweight way to handle UTM parameters session-based in your Laravel Applica
 
 ---
 
-## Table of Content
-
-- [Introduction](#introduction)
-- [Installation](#installation)
-- [Usage](#usage)
-- [License](#license)
-
-## Introduction
-
-What are these UTM parameters? UTM is an acronym standing for "Urchin Tracking Module" and where initially introduced in Google Analytics. It's a way, mostly marketers track effectiveness of online marketing campaigns.
-
-There are five different UTM parameters:
-- utm_source
-- utm_medium
-- utm_campaign
-- utm_content
-- utm_term
-
-Not all parameters are used everytime.
-Here would be a common example: https://www.example.com/?utm_source=newsletter&utm_medium=email&utm_campaign=holiday-sale
-
-
 ## Installation
 
-Install the `utm-parameter` package with composer:
+Follow these steps to install the Laravel UTM-Parameters package. [Guide for Laravel 10 and below.](https://github.com/toni-suarez/laravel-utm-parameter/wiki/Installation-Guide-(Laravel-8.x-to-10.x))
 
-```
+Open your terminal and navigate to your Laravel project directory. Then, use Composer to install the package:
+
+```bash
 $ composer require suarez/laravel-utm-parameter
 ```
 
-### Middleware
+### Middleware Configuration
 
-Open the `bootstrap/app.php` file and append the `UtmParameters::class` inside the web-group
+Once the package is installed, you need to add the UtmParameters middleware to your Laravel application. Open the `bootstrap/app.php` file and append the `UtmParameters::class` inside the web-group.
 
 ```php
 # Laravel 11
@@ -64,7 +44,10 @@ return Application::configure(basePath: dirname(__DIR__))
   ...
 ```
 
-To enable UTM-Parameters only for certain requests to your site, add a new alias.
+#### Alias Configuration (Optional)
+
+To enable UTM-Parameters only for certain requests or routes in your application, you can add an alias for the UtmParameters middleware. Open the bootstrap/app.php file and append the `UtmParameters::class` inside the web-group.
+
 
 ```php
 # Laravel 11
@@ -92,7 +75,7 @@ Route::middleware('utm-parameters')
 
 ## Usage
 
-### All UTM parameters
+### get_all_utm()
 
 To get an array of all UTM parameters, use this helper:  `get_all_utm()`.
 
@@ -100,7 +83,7 @@ To get an array of all UTM parameters, use this helper:  `get_all_utm()`.
 $parameter = get_all_utm();
 ```
 
-###  Get UTM parameter
+###  get_utm()
 
 If you need to retrieve certain UTM parameters, use `get_utm('source|medium|campaign|term|content')`.
 
@@ -130,7 +113,7 @@ Route::get('/', function () {
 });
 ```
 
-### Has UTM parameter
+### has_utm()
 
 Sometimes you want to show or do something, if user might have some or specific utm-parameters.
 
@@ -157,6 +140,10 @@ Simply use:
    session()->flash('Did you know, we have a newsletter?');
  }
 ```
+
+
+## Resources
+Explore additional use cases and resources on our wiki pages: https://github.com/toni-suarez/laravel-utm-parameter/wiki
 
 ---
 
