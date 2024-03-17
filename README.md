@@ -1,9 +1,9 @@
 # Laravel UTM-Parameters
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/suarez/laravel-utm-parameter.svg?style=flat-square)](https://packagist.org/packages/suarez/laravel-utm-parameter)
 [![StyleCI](https://github.styleci.io/repos/448347178/shield?branch=main)](https://github.styleci.io/repos/448347178?branch=main)
 [![Test PHP 8.x](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml/badge.svg?branch=main)](https://github.com/toni-suarez/laravel-utm-parameter/actions/workflows/tests-php8.yml)
 [![Packagist Downloads](https://img.shields.io/packagist/dt/suarez/laravel-utm-parameter)](https://packagist.org/packages/suarez/laravel-utm-parameter)
-![GitHub](https://img.shields.io/github/license/toni-suarez/laravel-utm-parameter)
 
 
 A lightweight way to handle UTM parameters session-based in your Laravel Application.
