@@ -70,7 +70,7 @@ To apply UTM-Parameters to specific routes, use the following middleware: `utm-p
 
 ```php
 Route::middleware('utm-parameters')
-  ->get('langing-page/{slug}', 'LandingPageController@show');
+  ->get('landing-page/{slug}', 'LandingPageController@show');
 ```
 
 ## Usage
