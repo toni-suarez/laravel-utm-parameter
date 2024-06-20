@@ -68,6 +68,17 @@ return [
    * - Disabled (false): The initial UTM parameters will persist throughout the session.
    */
   'override_utm_parameters' => false,
+
+  /*
+   * Session Key for UTM Parameters (default: 'utm')
+   *
+   * This key specifies the name used to access and store UTM parameters within the session data.
+   *
+   * If you're already using 'utm' for another purpose in your application,
+   * you can customize this key to avoid conflicts.
+   * Simply provide your preferred key name as a string value.
+   */
+  'session_key' => 'utm'
 ];
 ```
 
