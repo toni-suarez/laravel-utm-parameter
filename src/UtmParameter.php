@@ -11,11 +11,9 @@ class UtmParameter
      */
     public $parameters;
 
-    public function __construct($parameters = [])
+    public function __construct(array $parameters = [])
     {
-        $this->parameters = is_string($parameters)
-            ? json_decode($parameters, true)
-            : $parameters;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -32,9 +30,7 @@ class UtmParameter
             session(['utm' => $parameters]);
         }
 
-        $this->parameters = is_string($parameters)
-            ? json_decode($parameters, true)
-            : $parameters;
+        $this->parameters = $parameters;
 
         return app(UtmParameter::class, $parameters);
     }
@@ -59,10 +55,7 @@ class UtmParameter
     public static function get($key)
     {
         $parameters = self::all();
-
-        if (strpos($key, 'utm_') === false) {
-            $key = 'utm_'.$key;
-        }
+        $key = self::ensureUtmPrefix($key);
 
         if (!array_key_exists($key, $parameters)) {
             return null;
@@ -82,10 +75,7 @@ class UtmParameter
     public static function has($key, $value = null)
     {
         $parameters = self::all();
-
-        if (strpos($key, 'utm_') === false) {
-            $key = 'utm_'.$key;
-        }
+        $key = self::ensureUtmPrefix($key);
 
         if (!array_key_exists($key, $parameters)) {
             return false;
@@ -95,6 +85,37 @@ class UtmParameter
             return self::get($key) === $value;
         }
 
+        return true;
+    }
+
+    /**
+     * Determine if a value contains inside the key.
+     *
+     * @param string $key
+     * @param string $value
+     * @return bool
+     */
+    public static function contains($key, $value)
+    {
+        $parameters = self::all();
+        $key = self::ensureUtmPrefix($key);
+
+        if (!array_key_exists($key, $parameters) || !is_string($value)) {
+            return false;
+        }
+
+        return str_contains(self::get($key), $value);
+    }
+
+    /**
+     * Clear and remove utm session.
+     *
+     * @return bool
+     */
+    public static function clear()
+    {
+        app(UtmParameter::class)->parameters = null;
+        session()->forget('utm');
         return true;
     }
 
@@ -109,5 +130,16 @@ class UtmParameter
             ->filter(fn ($value, $key) => substr($key, 0, 4) === 'utm_')
             ->map(fn ($value) => htmlspecialchars($value, ENT_QUOTES, 'UTF-8'))
             ->toArray();
+    }
+
+    /**
+     * Ensure the key to start with 'utm_'.
+     *
+     * @param string $key
+     * @return string
+     */
+    protected static function ensureUtmPrefix(string $key): string
+    {
+        return str_starts_with($key, 'utm_') ? $key : 'utm_' . $key;
     }
 }

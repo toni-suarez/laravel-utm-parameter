@@ -15,9 +15,7 @@ class UtmParameterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(UtmParameter::class, function () {
-            return new UtmParameter();
-        });
+        $this->app->singleton(UtmParameter::class, fn () => new UtmParameter());
     }
 
     /**
