@@ -2,6 +2,8 @@
 
 namespace Suarez\UtmParameter;
 
+use Illuminate\Http\Request;
+
 class UtmParameter
 {
     /**
@@ -19,20 +21,39 @@ class UtmParameter
     /**
      * Bootstrap UtmParameter.
      *
-     * @param array|string|null $parameters
+     * @param Request $request
      *
      * @return UtmParameter
      */
-    public function boot($parameters = null)
+    public function boot(Request $request)
     {
-        if (!$parameters) {
-            $parameters = self::getParameter();
-            session(['utm' => $parameters]);
+        $this->parameters = $this->useRequestOrSession($request);
+        return $this;
+    }
+
+    /**
+     * Check which Parameters should be used.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return array
+     */
+    public function useRequestOrSession(Request $request)
+    {
+        $currentRequestParameter = self::getParameter($request);
+        $sessionParameter = session('utm');
+
+        if(!empty($currentRequestParameter) && empty($sessionParameter)) {
+            session(['utm' => $currentRequestParameter]);
+            return $currentRequestParameter;
         }
 
-        $this->parameters = $parameters;
+        if(!empty($currentRequestParameter) && !empty($sessionParameter) && config('utm-parameter.override_utm_parameters')) {
+            $mergedParameters = array_merge($sessionParameter, $currentRequestParameter);
+            session(['utm' => $mergedParameters]);
+            return $mergedParameters;
+        }
 
-        return app(UtmParameter::class, $parameters);
+        return $sessionParameter;
     }
 
     /**
@@ -124,9 +145,9 @@ class UtmParameter
      *
      * @return array
      */
-    protected static function getParameter()
+    protected static function getParameter(Request $request)
     {
-        return collect(request()->all())
+        return collect($request->all())
             ->filter(fn ($value, $key) => substr($key, 0, 4) === 'utm_')
             ->map(fn ($value) => htmlspecialchars($value, ENT_QUOTES, 'UTF-8'))
             ->toArray();

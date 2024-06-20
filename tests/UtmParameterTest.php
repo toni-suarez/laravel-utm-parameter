@@ -2,14 +2,17 @@
 
 namespace Suarez\UtmParameter\Tests;
 
+use Illuminate\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Suarez\UtmParameter\UtmParameter;
+use Illuminate\Support\Facades\Config;
 
 class UtmParameterTest extends TestCase
 {
     public function setUp(): void
     {
         parent::setUp();
+        Config::set('utm-parameter.override_utm_parameters', false);
 
         $parameters = [
             'utm_source'   => 'google',
@@ -19,8 +22,11 @@ class UtmParameterTest extends TestCase
             'utm_term'     => '{targetid}',
         ];
 
+        $request = Request::create('/test', 'GET', $parameters);
+
         app()->singleton(UtmParameter::class, fn () => new UtmParameter());
-        app(UtmParameter::class)->boot($parameters);
+        app(UtmParameter::class)->boot($request);
+        session(['utm' => $parameters]);
     }
 
     public function test_it_should_be_bound_in_the_app()
@@ -183,5 +189,76 @@ class UtmParameterTest extends TestCase
         UtmParameter::clear();
         $emptySource = UtmParameter::get('source');
         $this->assertNull($emptySource);
+    }
+
+    public function test_it_should_overwrite_new_utm_parameter()
+    {
+        Config::set('utm-parameter.override_utm_parameters', true);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
+        $parameters = [
+            'utm_source'   => 'newsletter',
+            'utm_medium'   => 'email'
+        ];
+
+        $request = Request::create('/test', 'GET', $parameters);
+        app(UtmParameter::class)->boot($request);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('newsletter', $source);
+
+        $medium = UtmParameter::get('utm_medium');
+        $this->assertEquals('email', $medium);
+
+        $campaign = UtmParameter::get('campaign');
+        $this->assertEquals('{campaignid}', $campaign);
+    }
+
+    public function test_it_should_keep_existing_parameters()
+    {
+        Config::set('utm-parameter.override_utm_parameters', false);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
+        $parameters = [
+            'id' => '0123456789',
+            'sorting' => 'relevance'
+        ];
+
+        $request = Request::create('/test', 'GET', $parameters);
+        app(UtmParameter::class)->boot($request);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
+        $medium = UtmParameter::get('utm_medium');
+        $this->assertEquals('cpc', $medium);
+
+        $campaign = UtmParameter::get('campaign');
+        $this->assertEquals('{campaignid}', $campaign);
+    }
+
+    public function test_it_should_keep_existing_parameters_while_browsing()
+    {
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
+        $parameters = ['id' => '0123456789', 'sorting' => 'relevance'];
+        $request = Request::create('/new-page', 'GET', $parameters);
+        app(UtmParameter::class)->boot($request);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
+        $parameters = [];
+        $request = Request::create('/second-page', 'GET', $parameters);
+        app(UtmParameter::class)->boot($request);
+
+        $source = UtmParameter::get('source');
+        $this->assertEquals('google', $source);
+
     }
 }

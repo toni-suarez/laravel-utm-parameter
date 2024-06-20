@@ -16,6 +16,7 @@ class UtmParameterServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->singleton(UtmParameter::class, fn () => new UtmParameter());
+        $this->mergeConfigFrom(__DIR__.'/../config/utm-parameter.php', 'utm-parameter');
     }
 
     /**
@@ -25,6 +26,8 @@ class UtmParameterServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->publishes([__DIR__.'/../config/utm-parameter.php' => config_path('utm-parameter.php')]);
+
         Blade::if('hasUtm', function (string $key, string|null $value = null) {
             return has_utm($key, $value);
         });
