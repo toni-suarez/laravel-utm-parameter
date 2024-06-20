@@ -259,6 +259,5 @@ class UtmParameterTest extends TestCase
 
         $source = UtmParameter::get('source');
         $this->assertEquals('google', $source);
-
     }
 }

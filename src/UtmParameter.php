@@ -42,12 +42,12 @@ class UtmParameter
         $currentRequestParameter = self::getParameter($request);
         $sessionParameter = session('utm');
 
-        if(!empty($currentRequestParameter) && empty($sessionParameter)) {
+        if (!empty($currentRequestParameter) && empty($sessionParameter)) {
             session(['utm' => $currentRequestParameter]);
             return $currentRequestParameter;
         }
 
-        if(!empty($currentRequestParameter) && !empty($sessionParameter) && config('utm-parameter.override_utm_parameters')) {
+        if (!empty($currentRequestParameter) && !empty($sessionParameter) && config('utm-parameter.override_utm_parameters')) {
             $mergedParameters = array_merge($sessionParameter, $currentRequestParameter);
             session(['utm' => $mergedParameters]);
             return $mergedParameters;
