@@ -148,11 +148,11 @@ Simply use:
 - `contains_not_utm('source|medium|campaign|term|content', 'value')`
 
 ```blade
-@containsUtm('source', 'weekly')
+@containsUtm('campaign', 'weekly')
   <div>Some Weekly related stuff</div>
 @endhasUtm
 
-@containsNotUtm('sales')
+@containsNotUtm('campaign', 'sales')
   <p>Some not Sales stuff</p>
 @endhasNotUtm
 ```
