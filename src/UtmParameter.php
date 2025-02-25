@@ -8,48 +8,48 @@ class UtmParameter
 {
     /**
      * Bag containing all UTM-Parameters.
-     *
-     * @var array
      */
-    public $parameters;
+    public ?array $parameters;
+
+    /**
+     * Utm Parameter Session Key.
+     */
+    public string $sessionKey;
 
     public function __construct(array $parameters = [])
     {
+        $this->sessionKey = config('utm-parameter.session_key');
         $this->parameters = $parameters;
     }
 
     /**
      * Bootstrap UtmParameter.
-     *
-     * @param Request $request
-     *
-     * @return UtmParameter
      */
-    public function boot(Request $request)
+    public function boot(Request $request): self
     {
         $this->parameters = $this->useRequestOrSession($request);
+
         return $this;
     }
 
     /**
      * Check which Parameters should be used.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return array
      */
-    public function useRequestOrSession(Request $request)
+    public function useRequestOrSession(Request $request): ?array
     {
-        $currentRequestParameter = self::getParameter($request);
-        $sessionParameter = session('utm');
+        $currentRequestParameter = $this->getParameter($request);
+        $sessionParameter = session($this->sessionKey);
 
-        if (!empty($currentRequestParameter) && empty($sessionParameter)) {
-            session(['utm' => $currentRequestParameter]);
+        if (! empty($currentRequestParameter) && empty($sessionParameter)) {
+            session([$this->sessionKey => $currentRequestParameter]);
+
             return $currentRequestParameter;
         }
 
-        if (!empty($currentRequestParameter) && !empty($sessionParameter) && config('utm-parameter.override_utm_parameters')) {
+        if (! empty($currentRequestParameter) && ! empty($sessionParameter) && config('utm-parameter.override_utm_parameters')) {
             $mergedParameters = array_merge($sessionParameter, $currentRequestParameter);
-            session(['utm' => $mergedParameters]);
+            session([$this->sessionKey => $mergedParameters]);
+
             return $mergedParameters;
         }
 
@@ -58,27 +58,21 @@ class UtmParameter
 
     /**
      * Retrieve all UTM-Parameter.
-     *
-     * @return array
      */
-    public static function all()
+    public function all(): array
     {
-        return app(UtmParameter::class)->parameters ?? [];
+        return session($this->sessionKey) ?? [];
     }
 
     /**
      * Retrieve a UTM-Parameter by key.
-     *
-     * @param string $key
-     *
-     * @return string|null
      */
-    public static function get($key)
+    public function get(string $key): ?string
     {
-        $parameters = self::all();
-        $key = self::ensureUtmPrefix($key);
+        $parameters = $this->all();
+        $key = $this->ensureUtmPrefix($key);
 
-        if (!array_key_exists($key, $parameters)) {
+        if (! array_key_exists($key, $parameters)) {
             return null;
         }
 
@@ -88,22 +82,19 @@ class UtmParameter
     /**
      * Determine if a UTM-Parameter exists.
      *
-     * @param string $key
-     * @param string $value
-     *
-     * @return bool
+     * @param  string  $value
      */
-    public static function has($key, $value = null)
+    public function has(string $key, $value = null): bool
     {
-        $parameters = self::all();
-        $key = self::ensureUtmPrefix($key);
+        $parameters = $this->all();
+        $key = $this->ensureUtmPrefix($key);
 
-        if (!array_key_exists($key, $parameters)) {
+        if (! array_key_exists($key, $parameters)) {
             return false;
         }
 
         if (array_key_exists($key, $parameters) && $value !== null) {
-            return self::get($key) === $value;
+            return $this->get($key) === $value;
         }
 
         return true;
@@ -111,56 +102,53 @@ class UtmParameter
 
     /**
      * Determine if a value contains inside the key.
-     *
-     * @param string $key
-     * @param string $value
-     * @return bool
      */
-    public static function contains($key, $value)
+    public function contains(string $key, string $value): bool
     {
-        $parameters = self::all();
-        $key = self::ensureUtmPrefix($key);
+        $parameters = $this->all();
+        $key = $this->ensureUtmPrefix($key);
 
-        if (!array_key_exists($key, $parameters) || !is_string($value)) {
+        if (! array_key_exists($key, $parameters) || ! is_string($value)) {
             return false;
         }
 
-        return str_contains(self::get($key), $value);
+        return str_contains($this->get($key), $value);
     }
 
     /**
      * Clear and remove utm session.
-     *
-     * @return bool
      */
-    public static function clear()
+    public function clear(): bool
     {
-        app(UtmParameter::class)->parameters = null;
-        session()->forget('utm');
+        session()->forget($this->sessionKey);
+        $this->parameters = null;
+
         return true;
     }
 
     /**
      * Retrieve all UTM-Parameter from the URI.
-     *
-     * @return array
      */
-    protected static function getParameter(Request $request)
+    protected function getParameter(Request $request): array
     {
+        $allowedKeys = config('utm-parameter.allowed_utm_parameters', [
+            'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content',
+        ]);
+
         return collect($request->all())
             ->filter(fn ($value, $key) => substr($key, 0, 4) === 'utm_')
-            ->map(fn ($value) => htmlspecialchars($value, ENT_QUOTES, 'UTF-8'))
+            ->filter(fn ($value, $key) => in_array($key, $allowedKeys))
+            ->mapWithKeys(fn ($value, $key) => [
+                htmlspecialchars($key, ENT_QUOTES, 'UTF-8') => htmlspecialchars($value, ENT_QUOTES, 'UTF-8'),
+            ])
             ->toArray();
     }
 
     /**
      * Ensure the key to start with 'utm_'.
-     *
-     * @param string $key
-     * @return string
      */
-    protected static function ensureUtmPrefix(string $key): string
+    protected function ensureUtmPrefix(string $key): string
     {
-        return str_starts_with($key, 'utm_') ? $key : 'utm_' . $key;
+        return str_starts_with($key, 'utm_') ? $key : 'utm_'.$key;
     }
 }
