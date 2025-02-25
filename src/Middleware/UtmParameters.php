@@ -10,11 +10,6 @@ class UtmParameters
 {
     /**
      * Handle an incoming request.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
-     * @return \Closure
      */
     public function handle(Request $request, Closure $next)
     {
@@ -27,12 +22,8 @@ class UtmParameters
 
     /**
      * Determines whether the given request/response pair should accept UTM-Parameters.
-     *
-     * @param \Illuminate\Http\Request  $request
-     *
-     * @return bool
      */
-    protected function shouldAcceptUtmParameter(Request $request)
+    protected function shouldAcceptUtmParameter(Request $request): bool
     {
         return $request->isMethod('GET');
     }

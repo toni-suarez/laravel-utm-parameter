@@ -37,7 +37,7 @@ php artisan vendor:publish --tag="utm-parameter"
 Once the package is installed, you can add the UtmParameters middleware to your Laravel application. Open the `bootstrap/app.php` file and append the `UtmParameters::class` inside the web-group.
 
 ```php
-# Laravel 11
+# Laravel 11+
 return Application::configure(basePath: dirname(__DIR__))
   ...
   ->withMiddleware(function (Middleware $middleware) {

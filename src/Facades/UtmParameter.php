@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Facade;
  */
 class UtmParameter extends Facade
 {
-    protected static function getFacadeAccessor()
+    protected static function getFacadeAccessor(): string
     {
         return \Suarez\UtmParameter\UtmParameter::class;
     }

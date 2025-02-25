@@ -3,14 +3,15 @@
 namespace Suarez\UtmParameter\Tests;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Orchestra\Testbench\TestCase;
 use Suarez\UtmParameter\Facades\UtmParameter;
-use Illuminate\Support\Facades\Config;
 
 class UtmParameterTest extends TestCase
 {
     protected $sessionKey;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
         parent::setUp();
         Config::set('utm-parameter.override_utm_parameters', false);
@@ -18,11 +19,11 @@ class UtmParameterTest extends TestCase
         $this->sessionKey = Config::get('utm-parameter.session_key');
 
         $parameters = [
-            'utm_source'   => 'google',
-            'utm_medium'   => 'cpc',
+            'utm_source' => 'google',
+            'utm_medium' => 'cpc',
             'utm_campaign' => '{campaignid}',
-            'utm_content'  => '{adgroupid}',
-            'utm_term'     => '{targetid}',
+            'utm_content' => '{adgroupid}',
+            'utm_term' => '{targetid}',
         ];
 
         $request = Request::create('/test', 'GET', $parameters);
@@ -30,7 +31,7 @@ class UtmParameterTest extends TestCase
         UtmParameter::boot($request);
     }
 
-    public function tearDown() : void
+    protected function tearDown(): void
     {
         session()->forget($this->sessionKey);
 
@@ -44,6 +45,18 @@ class UtmParameterTest extends TestCase
     {
         $utm = app(UtmParameter::class);
         $this->assertInstanceOf(UtmParameter::class, $utm);
+    }
+
+    public function test_it_should_work_without_parameters()
+    {
+        session()->forget($this->sessionKey);
+
+        $request = Request::create('/test', 'GET', []);
+        UtmParameter::boot($request);
+
+        $parameters = UtmParameter::all();
+        $this->assertIsArray($parameters);
+        $this->assertEmpty($parameters);
     }
 
     public function test_it_should_have_a_session_key()
@@ -266,8 +279,8 @@ class UtmParameterTest extends TestCase
         $this->assertEquals('google', $source);
 
         $parameters = [
-            'utm_source'   => 'newsletter',
-            'utm_medium'   => 'email'
+            'utm_source' => 'newsletter',
+            'utm_medium' => 'email',
         ];
 
         $request = Request::create('/', 'GET', $parameters);
@@ -292,7 +305,7 @@ class UtmParameterTest extends TestCase
 
         $parameters = [
             'id' => '0123456789',
-            'sorting' => 'relevance'
+            'sorting' => 'relevance',
         ];
 
         $request = Request::create('/test', 'GET', $parameters);
@@ -359,9 +372,9 @@ class UtmParameterTest extends TestCase
         Config::set('utm-parameter.allowed_utm_parameters', ['utm_source', 'utm_medium']);
 
         $parameters = [
-            'utm_source'=> 'newsletter',
+            'utm_source' => 'newsletter',
             'utm_medium' => 'email',
-            'utm_campaign' => 'not-allowed'
+            'utm_campaign' => 'not-allowed',
         ];
 
         $request = Request::create('/test', 'GET', $parameters);
@@ -395,7 +408,7 @@ class UtmParameterTest extends TestCase
         Config::set('utm-parameter.override_utm_parameters', true);
 
         $parameters = [
-            'utm_source'=> '<span onclick="alert(\'alert\')">google</span>',
+            'utm_source' => '<span onclick="alert(\'alert\')">google</span>',
             'utm_medium' => 'cpc<script>alert(1)</script>',
             'utm_campaign' => '<script href="x" onload="alert(1)">',
             'utm_content' => '<img src="x" onerror="alert(1)">',
