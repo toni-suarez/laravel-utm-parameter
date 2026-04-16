@@ -16,26 +16,43 @@ jobs:
     runs-on: ubuntu-latest
 
     strategy:
-      matrix:
-        laravel: ['12.*']
-        php: [8.2, 8.3, 8.4]
       fail-fast: false
+      matrix:
+        laravel: ['13.*']
+        php: ['8.3', '8.4']
 
-    name: Laravel ${{ matrix.laravel }}, PHP ${{ matrix.php }}
+    name: Laravel ${{ matrix.laravel }} | PHP ${{ matrix.php }}
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up PHP
+      - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-          extension: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, intl
+          coverage: none
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache/files
+          key: composer-${{ runner.os }}-${{ matrix.php }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            composer-${{ runner.os }}-${{ matrix.php }}-
 
       - name: Install dependencies
         run: |
-            composer require "illuminate/support:${{ matrix.laravel }}" "illuminate/contracts:${{ matrix.laravel }}" --no-interaction --no-update
-            composer update --prefer-stable --prefer-dist --no-interaction --no-suggest
+          composer require \
+            "illuminate/support:${{ matrix.laravel }}" \
+            "illuminate/contracts:${{ matrix.laravel }}" \
+            --no-interaction --no-update
+
+          composer update \
+            --prefer-dist \
+            --no-interaction \
+            --no-progress
+
       - name: Run tests
-        run: vendor/bin/phpunit
+        run: vendor/bin/phpunit --testdox
