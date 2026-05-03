@@ -210,11 +210,11 @@ Simply use:
 ```blade
 @containsUtm('campaign', 'weekly')
   <div>Some Weekly related stuff</div>
-@endhasUtm
+@endcontainsUtm
 
 @containsNotUtm('campaign', 'sales')
   <p>Some not Sales stuff</p>
-@endhasNotUtm
+@endcontainsNotUtm
 ```
 
 ```php
